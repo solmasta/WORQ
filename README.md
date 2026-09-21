@@ -10,10 +10,6 @@ See [docs/WORQ-PROCESS.md](docs/WORQ-PROCESS.md) for the full process flowchart,
 
 It's a single static file with no build step or server. To try it locally, open `app/index.html` in a browser.
 
-**Live for techs:** [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml) deploys `app/` to GitHub Pages automatically on every push to `main` that touches `app/`. Once the first deployment runs, the site is live at:
-
-`https://solmasta.github.io/WORQ/`
-
-That's the link to bookmark on a phone. No manual Pages setup is required — the workflow enables and configures Pages itself the first time it runs.
+**Live for techs:** `https://solmasta.github.io/WORQ/` — that's the link to bookmark on a phone. The root page immediately redirects to [`app/`](app/index.html), which is the actual tool. GitHub Pages here is set to "deploy from a branch" (the repo's default, not something this repo's files control), which rebuilds on every push to `main` automatically — no separate deploy step is needed.
 
 **Embedding in Corrigo:** see [docs/CORRIGO-INTEGRATION.md](docs/CORRIGO-INTEGRATION.md) for a handoff summary — what the tool is, what it needs (nothing), and what's left to decide on the Corrigo side.
