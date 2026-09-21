@@ -25,3 +25,5 @@ The original process protected something real: the FM's authority over cost and 
 ---
 
 A polished version of this comparison, built for the slide deck, is at [`docs/before-after.html`](before-after.html) (open in a browser) and as an image at [`docs/assets/before-after-comparison.png`](assets/before-after-comparison.png).
+
+**Note for the deck:** none of the above is tied to a specific piece of software. The process change — the $499 line, techs recommending instead of deciding, photos as evidence — is what matters. It could be delivered as this custom app, or through Smartsheet, which the company already uses. See [docs/SMARTSHEET-OPTION.md](SMARTSHEET-OPTION.md) for that comparison.
