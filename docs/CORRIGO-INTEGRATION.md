@@ -37,8 +37,19 @@ That's it — the tech still sends it themselves (paste into an email, or into w
 
 1. **Where does the link live?** Corrigo Enterprise has a "Customer Portal – Custom Links" admin feature; unclear whether that surface is technician-facing or customer-facing only. If it's customer-facing only, the equivalent for the technician mobile app (a "Quick Action," favorite, or custom button) would need to be found separately.
 2. **New tab or embedded?** Either works technically — pick whichever fits Corrigo's UI pattern for other external links.
-3. **Longer term:** Corrigo publishes a REST API (`developer.corrigo.com`) that could let this tool create work orders directly instead of producing text to paste. That's a separate, bigger project requiring OAuth credentials from Corrigo admin — worth considering once the email-based version is proven out with techs, not a blocker for linking it in now.
+
+## The other end: FM review and one-click Corrigo creation
+
+The next piece being designed (not built yet) is the FM side: when a WORQ email lands in the shared inbox, the FM should be able to approve, deny, or forward it for additional approval, and — for plain internal repairs — create the Corrigo work order in one click instead of retyping it.
+
+**Prototype:** [`app/fm-review-demo.html`](fm-review-demo.html) (live at `https://solmasta.github.io/WORQ/fm-review-demo.html`) shows the intended flow against sample requests. It is a click-through mockup only — not connected to any real inbox or to Corrigo.
+
+**What real one-click creation needs before it can be built:**
+
+1. **Corrigo API credentials.** Corrigo publishes a REST API (`developer.corrigo.com`) that can create work orders directly. This requires an OAuth client (client ID/secret) issued by your Corrigo admin — without it, "one click" can only mean "opens Corrigo pre-filled," not "creates it automatically."
+2. **Scope of what's automated.** Per direction from this project: only a straightforward Internal MTS repair (no vendor, no capital-vs-operating judgment call) is a candidate for one-click creation. Anything involving a third-party vendor or a capital/operating expense classification stays a manual decision for the FM — the prototype reflects this split.
+3. **Where the approve/deny/forward queue lives and how it's populated** — e.g. does it read the shared inbox directly (needs Microsoft 365/Google Workspace API access, depending on how `crewos@bmo.com` is hosted), or does the WORQ Intake app submit to a small backend that both feeds this queue and eventually calls Corrigo. Either way this is real infrastructure (a backend + database), not a static page like the intake tool.
 
 ## Where the source lives
 
-Repo: `solmasta/WORQ`, page source at `app/index.html`. Deploys automatically to GitHub Pages on every push to `main` via `.github/workflows/deploy-pages.yml` — the URL above never changes across updates.
+Repo: `solmasta/WORQ`. Tech intake tool at `app/index.html`, FM review prototype at `app/fm-review-demo.html`. GitHub Pages here rebuilds automatically on every push to `main` (repo default "deploy from branch" setting) — the URLs above never change across updates.
