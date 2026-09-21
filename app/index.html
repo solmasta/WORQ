@@ -238,6 +238,36 @@
   .toast.show{opacity:1; transform:translate(-50%,0);}
 
   footer.note{font-size:11px; color:var(--muted); text-align:center; margin-top:6px; line-height:1.5;}
+
+  .photo-add{
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    border:1.5px dashed var(--border); border-radius:12px; padding:14px;
+    font-size:13.5px; font-weight:700; color:var(--primary);
+    cursor:pointer; background:var(--surface-2); margin-bottom:12px;
+  }
+  .photo-add:hover{background:var(--border);}
+
+  .photo-card{
+    display:flex; gap:10px; align-items:flex-start;
+    border:1px solid var(--border); border-radius:12px; padding:10px;
+    margin-bottom:10px; background:var(--surface-2);
+  }
+  .photo-thumb{
+    width:64px; height:64px; border-radius:8px; object-fit:cover; flex:0 0 auto;
+    background:var(--border);
+  }
+  .photo-main{flex:1; min-width:0; display:flex; flex-direction:column; gap:6px;}
+  .photo-caption{
+    width:100%; font:inherit; font-size:13px; color:var(--ink); background:var(--surface);
+    border:1px solid var(--border); border-radius:8px; padding:7px 9px;
+  }
+  .photo-row-actions{display:flex; gap:8px; align-items:center;}
+  .photo-mini-btn{
+    font:inherit; font-size:11.5px; font-weight:700; border:none; border-radius:7px; padding:6px 9px; cursor:pointer;
+  }
+  .photo-mini-btn.download{background:var(--surface); color:var(--primary); border:1px solid var(--border);}
+  .photo-mini-btn.remove{background:var(--danger-bg); color:var(--danger);}
+  .photo-empty{font-size:12.5px; color:var(--muted); font-style:italic; margin-bottom:4px;}
 </style>
 </head>
 <body>
@@ -390,13 +420,20 @@
     </select>
     <div class="why">Your recommendation — the FM confirms it at close-out.</div>
   </div>
-  <div class="field">
-    <label>Photos attached?</label>
-    <div class="yn" id="photosYN">
-      <button type="button" data-val="Yes" aria-pressed="false">Yes</button>
-      <button type="button" data-val="No" aria-pressed="true">No</button>
-    </div>
   </div>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <span class="num">5</span>
+    <h2>Photos</h2>
+  </div>
+  <div class="card-sub" style="margin-bottom:12px;">A photo says more than the description field ever will. Caption each one so the FM can follow along without a site visit.</div>
+  <label class="photo-add" for="photoInput">
+    <span>+ Add photo</span>
+    <input type="file" id="photoInput" accept="image/*" capture="environment" multiple hidden>
+  </label>
+  <div id="photoList"></div>
 </section>
 
 <details class="preview" id="previewDetails">
@@ -427,35 +464,130 @@
     var sel = $('fmSelect').value;
     return sel === '__other__' ? $('fmOther').value.trim() : sel;
   }
-  var state = { photos:'No' };
-
   function loadDraft(){
     try{
       var raw = localStorage.getItem('worq-intake-draft');
       if(!raw) return;
       var d = JSON.parse(raw);
       ids.forEach(function(id){ if(d[id] !== undefined && $(id)) $(id).value = d[id]; });
-      if(d.photos) state.photos = d.photos;
     }catch(e){}
   }
   function saveDraft(){
     try{
-      var d = { photos: state.photos };
+      var d = {};
       ids.forEach(function(id){ if($(id)) d[id] = $(id).value; });
       localStorage.setItem('worq-intake-draft', JSON.stringify(d));
     }catch(e){}
   }
 
-  function setYN(groupId, key, defaultVal){
-    var group = $(groupId);
-    var buttons = group.querySelectorAll('button');
-    function apply(val){
-      state[key] = val;
-      buttons.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.val === val ? 'true' : 'false'); });
-      render(); saveDraft();
+  var photos = []; // { id, dataUrl, name, caption } — session only, not persisted
+  var photoSeq = 0;
+
+  function addPhotos(fileList){
+    Array.prototype.forEach.call(fileList, function(file){
+      if(!/^image\//.test(file.type)) return;
+      var id = 'p' + (++photoSeq);
+      var reader = new FileReader();
+      reader.onload = function(e){
+        photos.push({ id: id, dataUrl: e.target.result, name: file.name, caption: '' });
+        renderPhotos();
+        render();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderPhotos(){
+    var list = $('photoList');
+    list.innerHTML = '';
+    if(photos.length === 0){
+      var empty = document.createElement('div');
+      empty.className = 'photo-empty';
+      empty.textContent = 'No photos yet — optional, but the FM will thank you.';
+      list.appendChild(empty);
+      return;
     }
-    buttons.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.val); }); });
-    apply(state[key] || defaultVal);
+    photos.forEach(function(p, i){
+      var card = document.createElement('div');
+      card.className = 'photo-card';
+
+      var img = document.createElement('img');
+      img.className = 'photo-thumb';
+      img.src = p.dataUrl;
+      img.alt = 'Photo ' + (i + 1);
+      card.appendChild(img);
+
+      var main = document.createElement('div');
+      main.className = 'photo-main';
+
+      var cap = document.createElement('input');
+      cap.type = 'text';
+      cap.className = 'photo-caption';
+      cap.placeholder = 'Caption, e.g. "Corroded valve stem, close-up"';
+      cap.value = p.caption;
+      cap.addEventListener('input', function(){ p.caption = cap.value; render(); });
+      main.appendChild(cap);
+
+      var rowActions = document.createElement('div');
+      rowActions.className = 'photo-row-actions';
+
+      var dl = document.createElement('button');
+      dl.type = 'button';
+      dl.className = 'photo-mini-btn download';
+      dl.textContent = 'Download captioned';
+      dl.addEventListener('click', function(){ downloadCaptioned(p, i); });
+      rowActions.appendChild(dl);
+
+      var rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'photo-mini-btn remove';
+      rm.textContent = 'Remove';
+      rm.addEventListener('click', function(){
+        photos = photos.filter(function(x){ return x.id !== p.id; });
+        renderPhotos(); render();
+      });
+      rowActions.appendChild(rm);
+
+      main.appendChild(rowActions);
+      card.appendChild(main);
+      list.appendChild(card);
+    });
+  }
+
+  function downloadCaptioned(p, i){
+    var img = new Image();
+    img.onload = function(){
+      var canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      var barH = Math.max(48, Math.round(img.height * 0.09));
+      canvas.height = img.height + barH;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      ctx.fillStyle = '#0F3B73';
+      ctx.fillRect(0, img.height, canvas.width, barH);
+      ctx.fillStyle = '#FFFFFF';
+      var fontSize = Math.max(16, Math.round(barH * 0.36));
+      ctx.font = '600 ' + fontSize + 'px Inter, system-ui, sans-serif';
+      ctx.textBaseline = 'middle';
+      var caption = (p.caption && p.caption.trim()) ? p.caption.trim() : ('Photo ' + (i + 1));
+      var maxWidth = canvas.width - 32;
+      while(ctx.measureText(caption).width > maxWidth && caption.length > 3){
+        caption = caption.slice(0, -2);
+      }
+      if(caption.length < ((p.caption && p.caption.trim()) || ('Photo ' + (i + 1))).length) caption += '…';
+      ctx.fillText(caption, 16, img.height + barH / 2);
+      canvas.toBlob(function(blob){
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'worq-photo-' + (i + 1) + '.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 2000);
+      }, 'image/png');
+    };
+    img.src = p.dataUrl;
   }
 
   function fieldLine(label, value){
@@ -487,9 +619,16 @@
       fieldLine('Labor & Materials estimate', $('estimate').value ? '$' + $('estimate').value : ''),
       fieldLine('Age / condition of asset', $('condition').value),
       fieldLine('Remaining life estimate', $('remainingLife').value),
-      fieldLine('Capital type (tech recommendation — FM confirms)', $('capitalType').value),
-      fieldLine('Photos attached (Y/N)', state.photos)
+      fieldLine('Capital type (tech recommendation — FM confirms)', $('capitalType').value)
     );
+    if(photos.length === 0){
+      lines.push(fieldLine('Photos attached (Y/N)', 'No'));
+    } else {
+      lines.push('Photos attached (Y/N): Yes (' + photos.length + ')');
+      photos.forEach(function(p, i){
+        lines.push('  ' + (i + 1) + '. ' + (p.caption.trim() || '(no caption — see attached photo ' + (i + 1) + ')'));
+      });
+    }
     return { body: lines.join('\n'), over: over };
   }
 
@@ -547,8 +686,13 @@
     el.addEventListener('change', function(){ render(); saveDraft(); });
   });
 
+  $('photoInput').addEventListener('change', function(e){
+    addPhotos(e.target.files);
+    e.target.value = '';
+  });
+
   loadDraft();
-  setYN('photosYN', 'photos', 'No');
+  renderPhotos();
   render();
 })();
 </script>
