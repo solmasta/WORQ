@@ -15,3 +15,5 @@ It's a single static file with no build step or server. To try it locally, open 
 `https://solmasta.github.io/WORQ/`
 
 That's the link to bookmark on a phone. No manual Pages setup is required — the workflow enables and configures Pages itself the first time it runs.
+
+**Embedding in Corrigo:** see [docs/CORRIGO-INTEGRATION.md](docs/CORRIGO-INTEGRATION.md) for a handoff summary — what the tool is, what it needs (nothing), and what's left to decide on the Corrigo side.
