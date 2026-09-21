@@ -22,7 +22,7 @@ It's a single static file with no build step or server. To try it locally, open 
 
 ## Presentation deck (Teams-ready)
 
-[`docs/presentation.html`](docs/presentation.html) — live at `https://solmasta.github.io/WORQ/presentation.html` — is an 8-slide animated, click-through deck built to be screen-shared directly on a call: the original process, what changed, the actual tools (with real screenshots), and an honest what's-next. Arrow keys or click to advance. Flat image exports of each slide are in [`docs/assets/presentation/`](docs/assets/presentation/) for dropping into NotebookLM or a document. See [docs/NOTEBOOKLM-BRIEFING.md](docs/NOTEBOOKLM-BRIEFING.md) for the full narrative source and suggested presentation order.
+[`docs/presentation.html`](docs/presentation.html) — live at `https://solmasta.github.io/WORQ/docs/presentation.html` — is an 8-slide animated, click-through deck built to be screen-shared directly on a call: the original process, what changed, the actual tools (with real screenshots), and an honest what's-next. Arrow keys or click to advance. Flat image exports of each slide are in [`docs/assets/presentation/`](docs/assets/presentation/) for dropping into NotebookLM or a document. See [docs/NOTEBOOKLM-BRIEFING.md](docs/NOTEBOOKLM-BRIEFING.md) for the full narrative source and suggested presentation order.
 
 ## Platform option: Smartsheet
 

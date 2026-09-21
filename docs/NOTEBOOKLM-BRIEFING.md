@@ -4,7 +4,7 @@ This is the single source to upload to NotebookLM first (or paste as one documen
 
 **Audience:** corporate presentation, likely presented live on a Teams call. **Tone:** plain language — avoid technical terms (API, backend, database) unless directly explaining a limitation. **Goal:** show that a real communication gap between technicians and facility managers has been identified and closed, with working proof, not just a proposal.
 
-**There's already a live, animated deck built for exactly this call:** [`docs/presentation.html`](presentation.html) (open in a browser, live at `https://solmasta.github.io/WORQ/presentation.html`). Eight slides, click or arrow keys to advance, built to be screen-shared directly — no need to export to PowerPoint first. It covers the same eight sections below in the same order. Use NotebookLM for a narrated video version if you want one; use this deck directly if you're presenting live.
+**There's already a live, animated deck built for exactly this call:** [`docs/presentation.html`](presentation.html) (open in a browser, live at `https://solmasta.github.io/WORQ/docs/presentation.html`). Eight slides, click or arrow keys to advance, built to be screen-shared directly — no need to export to PowerPoint first. It covers the same eight sections below in the same order. Use NotebookLM for a narrated video version if you want one; use this deck directly if you're presenting live.
 
 ---
 
