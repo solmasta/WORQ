@@ -256,8 +256,8 @@
 <div class="banner danger" id="stopBanner" hidden>
   <span class="dot"></span>
   <div>
-    <strong>Hard stop — FM heads-up required</strong>
-    <span id="stopBannerText">This job is over $499. Call or email the FM with the issue, rough scope, and cost concern before sending this WORQ — then mark it below.</span>
+    <strong>Over $499 NTE</strong>
+    <span id="stopBannerText">Nothing gets spent past this until the FM approves it. The details below are what they'll use to decide — the more complete, the faster they can act.</span>
   </div>
 </div>
 
@@ -316,11 +316,12 @@
       </select>
     </div>
     <div class="field" id="vendorField">
-      <label for="vendor">Vendor</label>
-      <input type="text" id="vendor" placeholder="If third-party">
+      <label for="vendor">Recommended vendor</label>
+      <input type="text" id="vendor" placeholder="If you have one in mind">
+      <div class="why">Your recommendation — the FM decides who's actually used.</div>
     </div>
   </div>
-  <div class="field">
+  <div class="field" id="assetField">
     <label for="asset">Asset / equipment (unit, model / serial)</label>
     <input type="text" id="asset" placeholder="e.g. RTU-3, Carrier 48TC, SN 8842A">
   </div>
@@ -331,7 +332,7 @@
     <span class="num">3</span>
     <h2>Cost &amp; condition</h2>
   </div>
-  <div class="card-sub" style="margin-bottom:12px;">$499 or less goes straight to WORQ. Over that, the FM needs a heads-up first.</div>
+  <div class="card-sub" style="margin-bottom:12px;">$499 or less goes straight to WORQ. Over that, the FM reviews and decides from what's submitted here.</div>
   <div class="row2">
     <div class="field">
       <label for="nte">NTE</label>
@@ -349,6 +350,7 @@
         <option>Repair</option>
         <option>Replace</option>
       </select>
+      <div class="why">Your recommendation — the FM has final say.</div>
     </div>
     <div class="field">
       <label for="condition">Age / condition of asset</label>
@@ -388,17 +390,6 @@
     <div class="why">Your recommendation — the FM confirms it at close-out.</div>
   </div>
   <div class="field">
-    <label>FM notified beforehand?</label>
-    <div class="yn" id="fmNotifiedYN">
-      <button type="button" data-val="Yes" aria-pressed="false">Yes</button>
-      <button type="button" data-val="No" class="danger-active" aria-pressed="true">No</button>
-    </div>
-  </div>
-  <div class="field" id="fmWhoField">
-    <label for="fmWho">Who / when</label>
-    <input type="text" id="fmWho" placeholder="e.g. Called Van, 9/22 8:40am">
-  </div>
-  <div class="field">
     <label>Photos attached?</label>
     <div class="yn" id="photosYN">
       <button type="button" data-val="Yes" aria-pressed="false">Yes</button>
@@ -429,13 +420,13 @@
 (function(){
   var $ = function(id){ return document.getElementById(id); };
   var ids = ['location','fmSelect','fmOther','priority','description','resource','vendor','asset','nte','estimate',
-             'repairReplace','condition','remainingLife','capitalType','fmWho'];
+             'repairReplace','condition','remainingLife','capitalType'];
 
   function getFM(){
     var sel = $('fmSelect').value;
     return sel === '__other__' ? $('fmOther').value.trim() : sel;
   }
-  var state = { fmNotified:'No', photos:'No' };
+  var state = { photos:'No' };
 
   function loadDraft(){
     try{
@@ -443,13 +434,12 @@
       if(!raw) return;
       var d = JSON.parse(raw);
       ids.forEach(function(id){ if(d[id] !== undefined && $(id)) $(id).value = d[id]; });
-      if(d.fmNotified) state.fmNotified = d.fmNotified;
       if(d.photos) state.photos = d.photos;
     }catch(e){}
   }
   function saveDraft(){
     try{
-      var d = { fmNotified: state.fmNotified, photos: state.photos };
+      var d = { photos: state.photos };
       ids.forEach(function(id){ if($(id)) d[id] = $(id).value; });
       localStorage.setItem('worq-intake-draft', JSON.stringify(d));
     }catch(e){}
@@ -474,9 +464,8 @@
   function buildEmail(){
     var nte = parseFloat($('nte').value || '0') || 0;
     var over = nte > 499;
-    var fmLine = state.fmNotified === 'Yes'
-      ? 'Yes' + ($('fmWho').value.trim() ? ' — ' + $('fmWho').value.trim() : '')
-      : 'No';
+    var resource = $('resource').value;
+    var isThirdParty = resource === 'Third-party';
 
     var lines = [
       'WORQ',
@@ -486,17 +475,20 @@
       fieldLine('Priority (Rush, Normal)', $('priority').value),
       fieldLine('WO Description', $('description').value),
       fieldLine('NTE', '$' + nte),
-      fieldLine('Vendor', $('vendor').value),
-      fieldLine('Asset / Equipment (unit, model/serial)', $('asset').value),
-      fieldLine('Resource needed (Internal MTS / Third-party / Not sure)', $('resource').value),
-      fieldLine('Repair or Replace', $('repairReplace').value),
+      fieldLine('Recommended Vendor', $('vendor').value)
+    ];
+    if(!isThirdParty){
+      lines.push(fieldLine('Asset / Equipment (unit, model/serial)', $('asset').value));
+    }
+    lines.push(
+      fieldLine('Resource needed (Internal MTS / Third-party / Not sure)', resource),
+      fieldLine('Repair or Replace (tech recommendation)', $('repairReplace').value),
       fieldLine('Labor & Materials estimate', $('estimate').value ? '$' + $('estimate').value : ''),
       fieldLine('Age / condition of asset', $('condition').value),
       fieldLine('Remaining life estimate', $('remainingLife').value),
-      fieldLine('Capital type (Repair / Unplanned Capital / Future Capital)', $('capitalType').value),
-      fieldLine('FM notified beforehand (Y/N, who / when)', fmLine),
+      fieldLine('Capital type (tech recommendation — FM confirms)', $('capitalType').value),
       fieldLine('Photos attached (Y/N)', state.photos)
-    ];
+    );
     return { body: lines.join('\n'), over: over };
   }
 
@@ -508,19 +500,13 @@
     pill.dataset.state = res.over ? 'over' : 'ok';
     $('ntePillValue').textContent = '$' + (parseFloat($('nte').value || '0') || 0);
 
-    var needsHeadsUp = res.over && state.fmNotified !== 'Yes';
-    var banner = $('stopBanner');
-    banner.hidden = !needsHeadsUp;
+    $('stopBanner').hidden = !res.over;
 
-    var vendorRelevant = $('resource').value === 'Third-party';
-    $('vendorField').style.opacity = vendorRelevant ? 1 : .55;
+    var isThirdParty = $('resource').value === 'Third-party';
+    $('vendorField').style.opacity = isThirdParty ? 1 : .55;
+    $('assetField').hidden = isThirdParty;
 
-    $('fmWhoField').style.display = state.fmNotified === 'Yes' ? '' : 'none';
     $('fmOtherField').hidden = $('fmSelect').value !== '__other__';
-
-    var readyToSend = !(res.over && state.fmNotified !== 'Yes' && false); // heads-up recommended, not blocking
-    $('copyBtn').removeAttribute('disabled');
-    $('mailtoBtn').removeAttribute('disabled');
   }
 
   function toast(msg){
@@ -561,7 +547,6 @@
   });
 
   loadDraft();
-  setYN('fmNotifiedYN', 'fmNotified', 'No');
   setYN('photosYN', 'photos', 'No');
   render();
 })();

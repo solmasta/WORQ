@@ -1,22 +1,22 @@
 # Work Order Request (WORQ) Process
 
 **BMO | JLL MTS**
-MTS and FM align on scope before the WORQ is sent • $499 NTE is a hard stop
+The WORQ itself is the FM's heads-up • $499 NTE is a hard stop
 
 ![WORQ Process Flowchart](assets/worq-process-flowchart.png)
+
+> **Updated since v4 (pictured above):** the separate "call the FM before submitting" step has been dropped. The WORQ email now carries full detail up front — location, cost, condition, the tech's repair/replace and capital-type recommendation — so the FM can decide how to handle it from the submission itself, without a prior call. The tech isn't the final decision-maker on vendor, repair-vs-replace, or capital classification — those are recommendations the FM confirms. The steps and template below reflect the current process; the diagram above is kept for historical reference.
 
 ## Page 1 — Process Steps
 
 | # | Step | Owner | Description |
 |---|------|-------|-------------|
 | 1 | Identify the Issue | MTS Tech | Tech finds a problem, an aging asset, or a need for third-party assistance. |
-| — | Decision: Expected over $499 NTE? (or needs more attention) | MTS Tech | **No ($499 or less):** routine work goes straight to the WORQ email. **Yes:** go to step 2 first. |
-| 2 | FM Heads-Up First | MTS Tech | Call or email the FM before the WORQ: the issue, rough scope, internal vs. third-party, and any capital concern. Urgent or safety work may start once the FM is notified. |
-| 3 | Send the WORQ Email | MTS Tech | Email `crewos@bmo.com` with **WORQ** at the start of the body, using the template below. Required for every job; counts toward the 8 per month. |
-| 4 | Work Order Created | FMS + FM | FMS sort the central mailbox and create the WO with its NTE. Jobs over $499 also need the estimate approved in Carego. |
-| 5 | Perform the Work | MTS / Vendor | Complete the work, internal MTS or third-party, within the WO's NTE. |
+| 2 | Send the WORQ Email | MTS Tech | Email `crewos@bmo.com` with **WORQ** at the start of the body, using the template below. Required for every job; counts toward the 8 per month. Jobs over $499 NTE are flagged in the email itself so the FM knows to review before work proceeds. |
+| 3 | Work Order Created | FMS + FM | FMS sort the central mailbox and create the WO with its NTE. Jobs over $499 also need the estimate approved in Carego. |
+| 4 | Perform the Work | MTS / Vendor | Complete the work, internal MTS or third-party, within the WO's NTE. |
 | STOP | Hard Stop at $499 NTE | — | Nothing beyond the NTE is spent, ordered, or committed until the FM approves and the NTE is raised on the WO. Emergency or safety issue: make it safe within the NTE, then stop and call the FM. |
-| 6 | Close Out & Classify | MTS + FM | Confirm actual cost is within the approved NTE, then classify the job as Repair (OPEX), Unplanned Capital, or Future Capital. |
+| 5 | Close Out & Classify | MTS + FM | Confirm actual cost is within the approved NTE, then classify the job as Repair (OPEX), Unplanned Capital, or Future Capital. |
 
 ## Page 2 — WORQ Email Template
 
@@ -31,16 +31,15 @@ The FMS use these fields to create the work order. Shaded fields are new additio
 | FM: | Facility Manager for the site. |
 | Priority (Rush, Normal): | Sets urgency for the FMS. |
 | WO Description: | What is wrong and the work needed. |
-| NTE: | Not-to-exceed amount. $499 is the standard; anything over needs FM approval first. |
-| Vendor: | Third-party vendor, if one is used. |
-| Asset / Equipment (unit, model/serial): | Identifies the exact equipment for tracking and capital planning. |
+| NTE: | Not-to-exceed amount. $499 is the standard; anything over needs FM approval before work proceeds. |
+| Recommended Vendor: | Tech's suggested third-party vendor, if any — the FM decides who's actually used. |
+| Asset / Equipment (unit, model/serial): | Identifies the exact equipment for tracking and capital planning. Not needed when Resource needed is Third-party. |
 | Resource needed (Internal MTS / Third-party / Not sure): | Shows whether the request is a labor assignment or a vendor spend. |
-| Repair or Replace: | Drives the OPEX vs. capital decision. |
+| Repair or Replace: | Tech's recommendation; drives the OPEX vs. capital decision, FM has final say. |
 | Labor & Materials estimate: | Breaks out the cost behind the NTE. |
 | Age / condition of asset: | Approximate age; failing, degraded, or fine. |
 | Remaining life estimate: | Rough range. Feeds future capital planning. |
 | Capital type (Repair / Unplanned Capital / Future Capital): | Tech's recommendation; FM confirms. |
-| FM notified beforehand (Y/N, who / when): | Required for jobs over $499. Records the heads-up. |
 | Photos attached (Y/N): | Lets the FM and FMS review scope without a site visit. |
 
 ### Job Classification
@@ -55,7 +54,8 @@ The FMS use these fields to create the work order. Shaded fields are new additio
 
 - **Hard stop at $499 NTE.** Nothing beyond the NTE is spent, ordered, or committed until the FM approves and the NTE is raised on the WO.
 - **Safety first.** In an emergency or safety situation, make it safe within the NTE, then stop and call the FM.
-- **FM heads-up before the WORQ.** Jobs expected to exceed $499, or needing more attention, are discussed with the FM first, then submitted through the WORQ system.
+- **The WORQ email is the heads-up.** No separate pre-submission call is required — the email carries enough detail (cost, condition, recommendation) for the FM to decide how to handle it.
+- **Techs recommend, FMs decide.** Vendor, repair-vs-replace, and capital type are the tech's best judgment on the ground, not the final call — the FM confirms each at review or close-out.
 - **Every job goes through WORQ.** Email `crewos@bmo.com` with WORQ at the start of the body. Jobs over $499 also need the estimate approved in Carego.
 - **Every job is classified** as Repair, Unplanned Capital, or Future Capital before close-out.
 
