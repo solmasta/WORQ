@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WORQ Intake</title>
+<meta name="description" content="A guided, dropdown-driven form that builds a complete, correctly formatted WORQ email so techs stop leaving fields out.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  :root{ padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  [hidden]{ display:none !important; }
+  img{ max-width:100%; }
+  :root{
+    --bg:#F6F4EF;
+    --surface:#FFFFFF;
+    --surface-2:#F0ECE3;
+    --ink:#16233D;
+    --muted:#5B6472;
+    --primary:#0F3B73;
+    --primary-ink:#FFFFFF;
+    --accent:#C1521F;
+    --accent-ink:#FFFFFF;
+    --danger:#AE2A3E;
+    --danger-bg:#FBE9EB;
+    --success:#12795F;
+    --success-bg:#E7F4EF;
+    --border:#DDD7C9;
+    --focus:#0F3B73;
+    --shadow: 0 1px 2px rgba(22,35,61,.06), 0 8px 24px rgba(22,35,61,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B1220;
+      --surface:#131B2C;
+      --surface-2:#0F1A2C;
+      --ink:#E8ECF3;
+      --muted:#94A1B7;
+      --primary:#6EA0E8;
+      --primary-ink:#0B1220;
+      --accent:#E2884E;
+      --accent-ink:#241203;
+      --danger:#FF8B9A;
+      --danger-bg:#33141C;
+      --success:#5FD1AF;
+      --success-bg:#0E2A24;
+      --border:#26324A;
+      --focus:#6EA0E8;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B1220;
+    --surface:#131B2C;
+    --surface-2:#0F1A2C;
+    --ink:#E8ECF3;
+    --muted:#94A1B7;
+    --primary:#6EA0E8;
+    --primary-ink:#0B1220;
+    --accent:#E2884E;
+    --accent-ink:#241203;
+    --danger:#FF8B9A;
+    --danger-bg:#33141C;
+    --success:#5FD1AF;
+    --success-bg:#0E2A24;
+    --border:#26324A;
+    --focus:#6EA0E8;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    font-feature-settings:"tnum" 1;
+    padding-inline:16px;
+    padding-block:20px 96px;
+    max-width:640px;
+    margin-inline:auto;
+  }
+  h1,h2,h3{font-family:'IBM Plex Sans',system-ui,sans-serif; text-wrap:balance; margin:0;}
+  a{color:var(--primary);}
+
+  header.top{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    margin-bottom:18px;
+  }
+  header.top .brand{display:flex; flex-direction:column; gap:2px;}
+  header.top .eyebrow{
+    font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+  }
+  header.top h1{font-size:22px; font-weight:700; color:var(--ink);}
+  header.top p{margin:2px 0 0; font-size:13px; color:var(--muted);}
+
+  .nte-pill{
+    flex:0 0 auto;
+    display:flex; flex-direction:column; align-items:flex-end; gap:2px;
+    padding:8px 12px;
+    border-radius:12px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    min-width:104px;
+  }
+  .nte-pill .label{font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted);}
+  .nte-pill .value{font-size:18px; font-weight:700; font-variant-numeric:tabular-nums;}
+  .nte-pill[data-state="ok"] .value{color:var(--success);}
+  .nte-pill[data-state="over"] .value{color:var(--danger);}
+
+  .banner{
+    display:flex; gap:10px; align-items:flex-start;
+    border-radius:12px; padding:12px 14px; margin-bottom:18px;
+    border:1px solid transparent;
+    font-size:13px; line-height:1.45;
+  }
+  .banner.danger{background:var(--danger-bg); color:var(--danger); border-color:color-mix(in srgb, var(--danger) 35%, transparent);}
+  .banner strong{display:block; font-size:13px; margin-bottom:2px; font-weight:700;}
+  .banner[hidden]{display:none;}
+  .banner .dot{flex:0 0 auto; width:8px; height:8px; border-radius:50%; background:currentColor; margin-top:5px;}
+
+  section.card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:16px;
+    margin-bottom:14px;
+  }
+  section.card .card-head{
+    display:flex; align-items:baseline; gap:8px; margin-bottom:14px;
+  }
+  section.card .num{
+    font-family:'IBM Plex Sans',sans-serif; font-weight:700; font-size:12px;
+    color:var(--primary-ink); background:var(--primary);
+    width:22px; height:22px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+  }
+  section.card h2{font-size:15px; font-weight:700;}
+  section.card .card-sub{font-size:12px; color:var(--muted); margin:2px 0 0 30px;}
+
+  .field{margin-bottom:12px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{
+    display:block; font-size:12px; font-weight:600; color:var(--muted); margin-bottom:5px;
+  }
+  .field .why{font-size:11px; color:var(--muted); margin-top:4px; font-style:italic;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media (max-width:420px){ .row2{grid-template-columns:1fr;} }
+
+  input[type=text], input[type=number], select, textarea{
+    width:100%;
+    font:inherit; font-size:14px; color:var(--ink);
+    background:var(--surface-2);
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:9px 10px;
+    appearance:none;
+  }
+  textarea{resize:vertical; min-height:64px;}
+  select{
+    background-image:linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 18px) center, calc(100% - 13px) center;
+    background-size:5px 5px, 5px 5px;
+    background-repeat:no-repeat;
+    padding-right:30px;
+  }
+  input:focus, select:focus, textarea:focus{
+    outline:2px solid var(--focus); outline-offset:1px; border-color:var(--focus);
+  }
+  .unit-input{position:relative;}
+  .unit-input span{
+    position:absolute; left:10px; top:50%; transform:translateY(-50%);
+    font-size:14px; color:var(--muted); pointer-events:none;
+  }
+  .unit-input input{padding-left:22px;}
+
+  .yn{display:flex; gap:8px;}
+  .yn button{
+    flex:1; padding:9px 8px; font:inherit; font-size:13px; font-weight:600;
+    border-radius:9px; border:1px solid var(--border); background:var(--surface-2); color:var(--ink);
+    cursor:pointer;
+  }
+  .yn button[aria-pressed="true"]{
+    background:var(--primary); border-color:var(--primary); color:var(--primary-ink);
+  }
+  .yn button.danger-active[aria-pressed="true"]{
+    background:var(--danger); border-color:var(--danger); color:#fff;
+  }
+
+  details.preview{
+    background:var(--surface); border:1px solid var(--border); border-radius:16px;
+    box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden;
+  }
+  details.preview summary{
+    list-style:none; cursor:pointer; padding:14px 16px; display:flex; align-items:center; justify-content:space-between;
+    font-family:'IBM Plex Sans',sans-serif; font-weight:700; font-size:14px;
+  }
+  details.preview summary::-webkit-details-marker{display:none;}
+  details.preview summary .chev{transition:transform .15s ease; color:var(--muted);}
+  details.preview[open] summary .chev{transform:rotate(180deg);}
+  .preview-body{padding:0 16px 16px;}
+  pre#emailPreview{
+    white-space:pre-wrap; word-break:break-word;
+    background:var(--surface-2); border:1px solid var(--border); border-radius:10px;
+    padding:12px; font-size:12.5px; line-height:1.55; color:var(--ink);
+    font-family:'Inter',monospace;
+    max-height:340px; overflow:auto;
+  }
+
+  .actionbar{
+    position:fixed; left:0; right:0; bottom:0;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background:linear-gradient(to top, var(--bg) 60%, transparent);
+    display:flex; gap:10px; justify-content:center;
+  }
+  .actionbar .inner{
+    width:100%; max-width:608px; display:flex; gap:10px;
+    background:var(--surface); border:1px solid var(--border); border-radius:14px;
+    padding:10px; box-shadow:var(--shadow);
+  }
+  .btn{
+    flex:1; border:none; border-radius:10px; padding:12px 10px; font:inherit; font-weight:700; font-size:13.5px;
+    cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .btn.primary{background:var(--accent); color:var(--accent-ink);}
+  .btn.secondary{background:var(--surface-2); color:var(--ink); border:1px solid var(--border);}
+  .btn:active{transform:translateY(1px);}
+  .btn[disabled]{opacity:.55; cursor:not-allowed;}
+  .toast{
+    position:fixed; left:50%; bottom:92px; transform:translate(-50%,8px);
+    background:var(--ink); color:var(--bg); padding:8px 14px; border-radius:999px;
+    font-size:12.5px; font-weight:600; opacity:0; transition:opacity .18s ease, transform .18s ease;
+    pointer-events:none; white-space:nowrap;
+  }
+  .toast.show{opacity:1; transform:translate(-50%,0);}
+
+  footer.note{font-size:11px; color:var(--muted); text-align:center; margin-top:6px; line-height:1.5;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <span class="eyebrow">BMO · JLL MTS</span>
+    <h1>WORQ Intake</h1>
+    <p>Fill it once, in order — the email writes itself.</p>
+  </div>
+  <div class="nte-pill" id="ntePill" data-state="ok">
+    <span class="label">NTE</span>
+    <span class="value" id="ntePillValue">$499</span>
+  </div>
+</header>
+
+<div class="banner danger" id="stopBanner" hidden>
+  <span class="dot"></span>
+  <div>
+    <strong>Hard stop — FM heads-up required</strong>
+    <span id="stopBannerText">This job is over $499. Call or email the FM with the issue, rough scope, and cost concern before sending this WORQ — then mark it below.</span>
+  </div>
+</div>
+
+<section class="card">
+  <div class="card-head">
+    <span class="num">1</span>
+    <h2>Location &amp; contact</h2>
+  </div>
+  <div class="field">
+    <label for="location">Location</label>
+    <input type="text" id="location" placeholder="e.g. Branch 4021 — 2nd floor mechanical room">
+  </div>
+  <div class="row2">
+    <div class="field">
+      <label for="fm">Facility Manager</label>
+      <input type="text" id="fm" placeholder="FM name">
+    </div>
+    <div class="field">
+      <label for="priority">Priority</label>
+      <select id="priority">
+        <option>Normal</option>
+        <option>Rush</option>
+      </select>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <span class="num">2</span>
+    <h2>The issue</h2>
+  </div>
+  <div class="field">
+    <label for="description">WO description</label>
+    <textarea id="description" placeholder="What's wrong and what work is needed"></textarea>
+  </div>
+  <div class="row2">
+    <div class="field">
+      <label for="resource">Resource needed</label>
+      <select id="resource">
+        <option>Internal MTS</option>
+        <option>Third-party</option>
+        <option>Not sure</option>
+      </select>
+    </div>
+    <div class="field" id="vendorField">
+      <label for="vendor">Vendor</label>
+      <input type="text" id="vendor" placeholder="If third-party">
+    </div>
+  </div>
+  <div class="field">
+    <label for="asset">Asset / equipment (unit, model / serial)</label>
+    <input type="text" id="asset" placeholder="e.g. RTU-3, Carrier 48TC, SN 8842A">
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <span class="num">3</span>
+    <h2>Cost &amp; condition</h2>
+  </div>
+  <div class="card-sub" style="margin-bottom:12px;">$499 or less goes straight to WORQ. Over that, the FM needs a heads-up first.</div>
+  <div class="row2">
+    <div class="field">
+      <label for="nte">NTE</label>
+      <div class="unit-input"><span>$</span><input type="number" id="nte" value="499" min="0" step="1"></div>
+    </div>
+    <div class="field">
+      <label for="estimate">Labor &amp; materials estimate</label>
+      <div class="unit-input"><span>$</span><input type="text" id="estimate" placeholder="Breaks out the NTE"></div>
+    </div>
+  </div>
+  <div class="row2">
+    <div class="field">
+      <label for="repairReplace">Repair or replace</label>
+      <select id="repairReplace">
+        <option>Repair</option>
+        <option>Replace</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="condition">Age / condition of asset</label>
+      <select id="condition">
+        <option>Fine</option>
+        <option>Good</option>
+        <option>Degraded</option>
+        <option>Failing</option>
+        <option>Unknown</option>
+      </select>
+    </div>
+  </div>
+  <div class="field">
+    <label for="remainingLife">Remaining life estimate</label>
+    <select id="remainingLife">
+      <option>5+ years</option>
+      <option>3–5 years</option>
+      <option>1–3 years</option>
+      <option>Under 1 year</option>
+      <option>Unknown</option>
+    </select>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <span class="num">4</span>
+    <h2>Classification &amp; sign-off</h2>
+  </div>
+  <div class="field">
+    <label for="capitalType">Capital type</label>
+    <select id="capitalType">
+      <option>Repair (OPEX)</option>
+      <option>Unplanned Capital</option>
+      <option>Future Capital</option>
+    </select>
+    <div class="why">Your recommendation — the FM confirms it at close-out.</div>
+  </div>
+  <div class="field">
+    <label>FM notified beforehand?</label>
+    <div class="yn" id="fmNotifiedYN">
+      <button type="button" data-val="Yes" aria-pressed="false">Yes</button>
+      <button type="button" data-val="No" class="danger-active" aria-pressed="true">No</button>
+    </div>
+  </div>
+  <div class="field" id="fmWhoField">
+    <label for="fmWho">Who / when</label>
+    <input type="text" id="fmWho" placeholder="e.g. Called Van, 9/22 8:40am">
+  </div>
+  <div class="field">
+    <label>Photos attached?</label>
+    <div class="yn" id="photosYN">
+      <button type="button" data-val="Yes" aria-pressed="false">Yes</button>
+      <button type="button" data-val="No" aria-pressed="true">No</button>
+    </div>
+  </div>
+</section>
+
+<details class="preview" id="previewDetails">
+  <summary>Email preview <span class="chev">▾</span></summary>
+  <div class="preview-body">
+    <pre id="emailPreview"></pre>
+  </div>
+</details>
+
+<footer class="note">To: <strong>crewos@bmo.com</strong> · Every job goes through WORQ · Jobs over $499 also need the estimate approved in Carego.</footer>
+
+<div class="toast" id="toast">Copied</div>
+
+<div class="actionbar">
+  <div class="inner">
+    <button class="btn secondary" id="copyBtn">Copy email</button>
+    <button class="btn primary" id="mailtoBtn">Open in mail app</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var ids = ['location','fm','priority','description','resource','vendor','asset','nte','estimate',
+             'repairReplace','condition','remainingLife','capitalType','fmWho'];
+  var state = { fmNotified:'No', photos:'No' };
+
+  function loadDraft(){
+    try{
+      var raw = localStorage.getItem('worq-intake-draft');
+      if(!raw) return;
+      var d = JSON.parse(raw);
+      ids.forEach(function(id){ if(d[id] !== undefined && $(id)) $(id).value = d[id]; });
+      if(d.fmNotified) state.fmNotified = d.fmNotified;
+      if(d.photos) state.photos = d.photos;
+    }catch(e){}
+  }
+  function saveDraft(){
+    try{
+      var d = { fmNotified: state.fmNotified, photos: state.photos };
+      ids.forEach(function(id){ if($(id)) d[id] = $(id).value; });
+      localStorage.setItem('worq-intake-draft', JSON.stringify(d));
+    }catch(e){}
+  }
+
+  function setYN(groupId, key, defaultVal){
+    var group = $(groupId);
+    var buttons = group.querySelectorAll('button');
+    function apply(val){
+      state[key] = val;
+      buttons.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.val === val ? 'true' : 'false'); });
+      render(); saveDraft();
+    }
+    buttons.forEach(function(b){ b.addEventListener('click', function(){ apply(b.dataset.val); }); });
+    apply(state[key] || defaultVal);
+  }
+
+  function fieldLine(label, value){
+    return value && String(value).trim() ? (label + ': ' + String(value).trim()) : (label + ': ');
+  }
+
+  function buildEmail(){
+    var nte = parseFloat($('nte').value || '0') || 0;
+    var over = nte > 499;
+    var fmLine = state.fmNotified === 'Yes'
+      ? 'Yes' + ($('fmWho').value.trim() ? ' — ' + $('fmWho').value.trim() : '')
+      : 'No';
+
+    var lines = [
+      'WORQ',
+      '',
+      fieldLine('Location', $('location').value),
+      fieldLine('FM', $('fm').value),
+      fieldLine('Priority (Rush, Normal)', $('priority').value),
+      fieldLine('WO Description', $('description').value),
+      fieldLine('NTE', '$' + nte),
+      fieldLine('Vendor', $('vendor').value),
+      fieldLine('Asset / Equipment (unit, model/serial)', $('asset').value),
+      fieldLine('Resource needed (Internal MTS / Third-party / Not sure)', $('resource').value),
+      fieldLine('Repair or Replace', $('repairReplace').value),
+      fieldLine('Labor & Materials estimate', $('estimate').value ? '$' + $('estimate').value : ''),
+      fieldLine('Age / condition of asset', $('condition').value),
+      fieldLine('Remaining life estimate', $('remainingLife').value),
+      fieldLine('Capital type (Repair / Unplanned Capital / Future Capital)', $('capitalType').value),
+      fieldLine('FM notified beforehand (Y/N, who / when)', fmLine),
+      fieldLine('Photos attached (Y/N)', state.photos)
+    ];
+    return { body: lines.join('\n'), over: over };
+  }
+
+  function render(){
+    var res = buildEmail();
+    $('emailPreview').textContent = res.body;
+
+    var pill = $('ntePill');
+    pill.dataset.state = res.over ? 'over' : 'ok';
+    $('ntePillValue').textContent = '$' + (parseFloat($('nte').value || '0') || 0);
+
+    var needsHeadsUp = res.over && state.fmNotified !== 'Yes';
+    var banner = $('stopBanner');
+    banner.hidden = !needsHeadsUp;
+
+    var vendorRelevant = $('resource').value === 'Third-party';
+    $('vendorField').style.opacity = vendorRelevant ? 1 : .55;
+
+    $('fmWhoField').style.display = state.fmNotified === 'Yes' ? '' : 'none';
+
+    var readyToSend = !(res.over && state.fmNotified !== 'Yes' && false); // heads-up recommended, not blocking
+    $('copyBtn').removeAttribute('disabled');
+    $('mailtoBtn').removeAttribute('disabled');
+  }
+
+  function toast(msg){
+    var t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast._h);
+    toast._h = setTimeout(function(){ t.classList.remove('show'); }, 1600);
+  }
+
+  $('copyBtn').addEventListener('click', function(){
+    var body = buildEmail().body;
+    var text = 'To: crewos@bmo.com\n\n' + body;
+    try{
+      navigator.clipboard.writeText(text).then(function(){ toast('Copied — paste into a new email'); })
+        .catch(function(){ fallbackCopy(text); });
+    }catch(e){ fallbackCopy(text); }
+  });
+  function fallbackCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); toast('Copied — paste into a new email'); }
+    catch(e){ toast('Copy failed — select the preview text manually'); }
+    document.body.removeChild(ta);
+  }
+
+  $('mailtoBtn').addEventListener('click', function(){
+    var body = buildEmail().body;
+    var href = 'mailto:crewos@bmo.com?subject=' + encodeURIComponent('WORQ') + '&body=' + encodeURIComponent(body);
+    window.location.href = href;
+  });
+
+  ids.forEach(function(id){
+    var el = $(id);
+    if(!el) return;
+    el.addEventListener('input', function(){ render(); saveDraft(); });
+    el.addEventListener('change', function(){ render(); saveDraft(); });
+  });
+
+  loadDraft();
+  setYN('fmNotifiedYN', 'fmNotified', 'No');
+  setYN('photosYN', 'photos', 'No');
+  render();
+})();
+</script>
+</body>
+</html>
