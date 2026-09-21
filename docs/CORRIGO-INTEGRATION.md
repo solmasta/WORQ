@@ -42,7 +42,7 @@ That's it — the tech still sends it themselves (paste into an email, or into w
 
 The next piece being designed (not built yet) is the FM side: when a WORQ email lands in the shared inbox, the FM should be able to approve, deny, or forward it for additional approval, and — for plain internal repairs — create the Corrigo work order in one click instead of retyping it.
 
-**Prototype:** [`app/fm-review-demo.html`](fm-review-demo.html) (live at `https://solmasta.github.io/WORQ/fm-review-demo.html`) shows the intended flow against sample requests. It is a click-through mockup only — not connected to any real inbox or to Corrigo.
+**Visual reference:** [`app/fm-review-demo.html`](fm-review-demo.html) (live at `https://solmasta.github.io/WORQ/fm-review-demo.html`) shows the intended flow against sample requests. It's a static mockup — nothing is clickable — built as source material for the slide deck and video, not connected to any real inbox or to Corrigo. Individual state screenshots (pending, approved, denied, escalated) are in [`docs/assets/fm-review-states/`](assets/fm-review-states/), ready to drop into slides.
 
 **What real one-click creation needs before it can be built:**
 

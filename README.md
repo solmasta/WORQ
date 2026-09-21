@@ -14,6 +14,6 @@ It's a single static file with no build step or server. To try it locally, open 
 
 **Embedding in Corrigo:** see [docs/CORRIGO-INTEGRATION.md](docs/CORRIGO-INTEGRATION.md) for a handoff summary — what the tool is, what it needs (nothing), and what's left to decide on the Corrigo side.
 
-## FM Review Queue (prototype)
+## FM Review Queue (visual reference)
 
-[`app/fm-review-demo.html`](app/fm-review-demo.html) — live at `https://solmasta.github.io/WORQ/fm-review-demo.html` — is a click-through prototype of the FM side: approve, deny, or forward a WORQ request for additional approval, with one-click Corrigo creation proposed for plain internal repairs (anything involving a vendor or a capital/operating call stays manual). It runs on sample data only — not connected to a real inbox or to Corrigo. See [docs/CORRIGO-INTEGRATION.md](docs/CORRIGO-INTEGRATION.md#the-other-end-fm-review-and-one-click-corrigo-creation) for what real API access this would need.
+[`app/fm-review-demo.html`](app/fm-review-demo.html) — live at `https://solmasta.github.io/WORQ/fm-review-demo.html` — is a static mockup of the FM side: approve, deny, or forward a WORQ request for additional approval, with one-click Corrigo creation proposed for plain internal repairs (anything involving a vendor or a capital/operating call stays manual). Nothing on the page is interactive — it's built as source material for the slide deck and video, not a working tool. Individual state screenshots live in [`docs/assets/fm-review-states/`](docs/assets/fm-review-states/). See [docs/CORRIGO-INTEGRATION.md](docs/CORRIGO-INTEGRATION.md#the-other-end-fm-review-and-one-click-corrigo-creation) for what real API access this would need to become a working tool.
