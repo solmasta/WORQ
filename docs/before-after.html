@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Same Goal, Less Waiting</title>
+<meta name="description" content="Plain-language comparison of the original WORQ tracking procedure against the new process — what changed, what stayed the same, and why.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  [hidden]{display:none!important;}
+  img{max-width:100%;}
+  :root{
+    --bg:#F6F4EF;
+    --surface:#FFFFFF;
+    --ink:#16233D;
+    --muted:#5B6472;
+    --primary:#0F3B73;
+    --primary-ink:#FFFFFF;
+    --old:#AE2A3E;
+    --old-bg:#FBE9EB;
+    --old-line:#F1C7CD;
+    --now:#12795F;
+    --now-bg:#E7F4EF;
+    --now-line:#BFE1D3;
+    --border:#DDD7C9;
+    --shadow: 0 1px 2px rgba(22,35,61,.06), 0 10px 28px rgba(22,35,61,.07);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0B1220; --surface:#131B2C; --ink:#E8ECF3; --muted:#98A5BA;
+      --primary:#6EA0E8; --primary-ink:#0B1220;
+      --old:#FF8B9A; --old-bg:#33141C; --old-line:#4A1E28;
+      --now:#5FD1AF; --now-bg:#0E2A24; --now-line:#1B3E36;
+      --border:#26324A;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 28px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0B1220; --surface:#131B2C; --ink:#E8ECF3; --muted:#98A5BA;
+    --primary:#6EA0E8; --primary-ink:#0B1220;
+    --old:#FF8B9A; --old-bg:#33141C; --old-line:#4A1E28;
+    --now:#5FD1AF; --now-bg:#0E2A24; --now-line:#1B3E36;
+    --border:#26324A;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 28px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    margin-block:0;
+    padding-inline:20px; padding-block:32px 48px;
+    max-width:900px; margin-inline:auto;
+  }
+  [hidden]{display:none!important;}
+  img{max-width:100%;}
+  h1,h2{font-family:'IBM Plex Sans',system-ui,sans-serif; text-wrap:balance; margin:0;}
+
+  header{text-align:center; margin-bottom:8px;}
+  header .eyebrow{font-size:12px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--muted);}
+  header h1{font-size:clamp(28px,4.2vw,40px); font-weight:800; margin:6px 0 10px; color:var(--primary);}
+  header p{font-size:16px; color:var(--muted); max-width:52ch; margin:0 auto; line-height:1.5;}
+
+  .colheads{
+    display:grid; grid-template-columns:1fr 1fr; gap:14px;
+    margin:32px 0 10px; position:sticky; top:0; z-index:2;
+  }
+  .colhead{
+    text-align:center; font-family:'IBM Plex Sans',sans-serif; font-weight:800; font-size:15px;
+    padding:10px; border-radius:10px 10px 0 0;
+  }
+  .colhead.old{background:var(--old); color:#fff;}
+  .colhead.now{background:var(--now); color:#fff;}
+
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;}
+  .cell{
+    border-radius:0 0 12px 12px; padding:16px 18px; font-size:14.5px; line-height:1.55;
+    border:1.5px solid; border-top:none;
+  }
+  .cell.old{background:var(--old-bg); border-color:var(--old-line); color:var(--ink);}
+  .cell.now{background:var(--now-bg); border-color:var(--now-line); color:var(--ink);}
+  .cell .tag{
+    display:block; font-family:'IBM Plex Sans',sans-serif; font-weight:700; font-size:12px;
+    text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px;
+  }
+  .cell.old .tag{color:var(--old);}
+  .cell.now .tag{color:var(--now);}
+  .cell .quote{font-style:italic; opacity:.8; font-size:13px; display:block; margin-top:6px;}
+
+  @media (max-width:620px){
+    .colheads{position:static;}
+    .row{grid-template-columns:1fr;}
+    .colheads{grid-template-columns:1fr; display:none;}
+    .cell{border-radius:12px; border-top:1.5px solid;}
+    .cell.old::before{content:"BEFORE"; display:block; font:800 11px 'IBM Plex Sans',sans-serif; letter-spacing:.08em; color:var(--old); margin-bottom:8px;}
+    .cell.now::before{content:"NOW"; display:block; font:800 11px 'IBM Plex Sans',sans-serif; letter-spacing:.08em; color:var(--now); margin-bottom:8px;}
+  }
+
+  .same{
+    margin-top:36px; background:var(--surface); border:1.5px solid var(--border); border-radius:16px;
+    padding:22px 24px; box-shadow:var(--shadow);
+  }
+  .same h2{font-size:17px; font-weight:700; color:var(--primary); margin-bottom:12px;}
+  .same ul{margin:0; padding-left:20px; font-size:14.5px; line-height:1.65;}
+  .same li{margin-bottom:6px;}
+  .same li:last-child{margin-bottom:0;}
+
+  .closing{
+    text-align:center; margin-top:32px; font-family:'IBM Plex Sans',sans-serif;
+    font-size:18px; font-weight:700; color:var(--ink); line-height:1.5; max-width:44ch; margin-inline:auto;
+  }
+  .closing span{color:var(--now);}
+
+  footer.note{font-size:11.5px; color:var(--muted); text-align:center; margin-top:28px; line-height:1.6;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="eyebrow">BMO · JLL MTS</span>
+  <h1>Same Goal. A Lot Less Waiting.</h1>
+  <p>The original WORQ procedure and the new one protect the same thing — the FM's authority over cost and funding. What changed is how much has to stop and wait to get there.</p>
+</header>
+
+<div class="colheads">
+  <div class="colhead old">Before</div>
+  <div class="colhead now">Now</div>
+</div>
+
+<div class="row">
+  <div class="cell old">
+    <span class="tag">Every request, no exceptions</span>
+    Every single request — even a $40 part — had to be reviewed with the FM before anything could happen.
+    <span class="quote">"All WORQ requests must be reviewed with the Facility Manager prior to authorization or execution."</span>
+  </div>
+  <div class="cell now">
+    <span class="tag">A clear line: $499</span>
+    Routine, small jobs go through right away. FM attention is spent only on the requests that actually call for a decision.
+  </div>
+</div>
+
+<div class="row">
+  <div class="cell old">
+    <span class="tag">A live conversation, every time</span>
+    Costs had to be validated with the FM directly — a call or meeting — for every job, before work could be scheduled.
+    <span class="quote">"Labor and Material costs shall be validated with the FM to assess available OPEX funding."</span>
+  </div>
+  <div class="cell now">
+    <span class="tag">One form, filled in once</span>
+    The tech enters cost, condition, and what's needed in a simple guided form. It's all there for the FM to review on their own time — nothing to repeat over the phone.
+  </div>
+</div>
+
+<div class="row">
+  <div class="cell old">
+    <span class="tag">Stop and wait</span>
+    Work could not proceed until funding, classification, and cost were all separately confirmed by the FM.
+    <span class="quote">"DO NOT PROCEED — await FM Validation, OPEX Funding Review, and Unplanned Capital Tracking Determination."</span>
+  </div>
+  <div class="cell now">
+    <span class="tag">Only the hard cases wait</span>
+    The easy cases aren't held up by the same process built for the hard ones. A real judgment call — a vendor, a capital decision — is flagged clearly and still goes to the FM, without freezing everything else.
+  </div>
+</div>
+
+<div class="row">
+  <div class="cell old">
+    <span class="tag">A description, and nothing else</span>
+    Decisions were made from a written or verbal account of the problem — no way for the FM to actually see it.
+  </div>
+  <div class="cell now">
+    <span class="tag">Photos, captioned by the tech</span>
+    The FM sees the actual problem, not just a description of it. A picture closes a gap words can't.
+  </div>
+</div>
+
+<div class="row">
+  <div class="cell old">
+    <span class="tag">Re-entered by hand</span>
+    After validating everything, the FM (or FMS) still had to create the work order in Corrigo from scratch.
+  </div>
+  <div class="cell now">
+    <span class="tag">One click, for the clear cases</span>
+    For a plain internal repair, approving the request can also create the Corrigo work order — nothing gets retyped.
+  </div>
+</div>
+
+<div class="same">
+  <h2>What doesn't change</h2>
+  <ul>
+    <li>The FM still has final say on funding, vendor choice, and whether something is repair, unplanned capital, or future capital.</li>
+    <li>Nothing gets spent past the approved amount without the FM's OK — that hard stop stays exactly as strict.</li>
+    <li>Every job still gets tracked and classified before it's closed out — for the budget and for the capital plan.</li>
+  </ul>
+</div>
+
+<p class="closing">The accountability the original process was built to protect <span>stays intact</span>. What disappears is the waiting.</p>
+
+<footer class="note">Comparing BMO | JLL MTS Work Order Request Tracking Procedure (v2) against the current WORQ process and tooling.</footer>
+
+</body>
+</html>
