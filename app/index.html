@@ -146,6 +146,7 @@
   }
   .field .why{font-size:11px; color:var(--muted); margin-top:4px; font-style:italic;}
   .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .row2 > .field.span2{grid-column:1 / -1;}
   @media (max-width:420px){ .row2{grid-template-columns:1fr;} }
 
   input[type=text], input[type=number], select, textarea{
@@ -271,8 +272,20 @@
   </div>
   <div class="row2">
     <div class="field">
-      <label for="fm">Facility Manager</label>
-      <input type="text" id="fm" placeholder="FM name">
+      <label for="fmSelect">Facility Manager</label>
+      <select id="fmSelect">
+        <option value="" disabled selected>Select FM…</option>
+        <option>Van Nguyen</option>
+        <option>Priya Shah</option>
+        <option>Marcus Ortega</option>
+        <option>Dana Whitfield</option>
+        <option value="__other__">Other / not listed</option>
+      </select>
+      <div class="why" style="margin-top:6px;">Example roster — swap in your real FM list.</div>
+    </div>
+    <div class="field span2" id="fmOtherField" hidden>
+      <label for="fmOther">FM name</label>
+      <input type="text" id="fmOther" placeholder="Type the FM's name">
     </div>
     <div class="field">
       <label for="priority">Priority</label>
@@ -415,8 +428,13 @@
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
-  var ids = ['location','fm','priority','description','resource','vendor','asset','nte','estimate',
+  var ids = ['location','fmSelect','fmOther','priority','description','resource','vendor','asset','nte','estimate',
              'repairReplace','condition','remainingLife','capitalType','fmWho'];
+
+  function getFM(){
+    var sel = $('fmSelect').value;
+    return sel === '__other__' ? $('fmOther').value.trim() : sel;
+  }
   var state = { fmNotified:'No', photos:'No' };
 
   function loadDraft(){
@@ -464,7 +482,7 @@
       'WORQ',
       '',
       fieldLine('Location', $('location').value),
-      fieldLine('FM', $('fm').value),
+      fieldLine('FM', getFM()),
       fieldLine('Priority (Rush, Normal)', $('priority').value),
       fieldLine('WO Description', $('description').value),
       fieldLine('NTE', '$' + nte),
@@ -498,6 +516,7 @@
     $('vendorField').style.opacity = vendorRelevant ? 1 : .55;
 
     $('fmWhoField').style.display = state.fmNotified === 'Yes' ? '' : 'none';
+    $('fmOtherField').hidden = $('fmSelect').value !== '__other__';
 
     var readyToSend = !(res.over && state.fmNotified !== 'Yes' && false); // heads-up recommended, not blocking
     $('copyBtn').removeAttribute('disabled');
