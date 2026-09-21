@@ -20,6 +20,10 @@ It's a single static file with no build step or server. To try it locally, open 
 
 [`app/fm-review-demo.html`](app/fm-review-demo.html) — live at `https://solmasta.github.io/WORQ/fm-review-demo.html` — is a static mockup of the FM side: approve, deny, or forward a WORQ request for additional approval, with one-click Corrigo creation proposed for plain internal repairs (anything involving a vendor or a capital/operating call stays manual). Nothing on the page is interactive — it's built as source material for the slide deck and video, not a working tool. Individual state screenshots live in [`docs/assets/fm-review-states/`](docs/assets/fm-review-states/). See [docs/CORRIGO-INTEGRATION.md](docs/CORRIGO-INTEGRATION.md#the-other-end-fm-review-and-one-click-corrigo-creation) for what real API access this would need to become a working tool.
 
+## Presentation deck (Teams-ready)
+
+[`docs/presentation.html`](docs/presentation.html) — live at `https://solmasta.github.io/WORQ/presentation.html` — is an 8-slide animated, click-through deck built to be screen-shared directly on a call: the original process, what changed, the actual tools (with real screenshots), and an honest what's-next. Arrow keys or click to advance. Flat image exports of each slide are in [`docs/assets/presentation/`](docs/assets/presentation/) for dropping into NotebookLM or a document. See [docs/NOTEBOOKLM-BRIEFING.md](docs/NOTEBOOKLM-BRIEFING.md) for the full narrative source and suggested presentation order.
+
 ## Platform option: Smartsheet
 
 Since the company already runs Smartsheet, it's worth raising as an alternative delivery platform — not a decision, just an option for the presentation. See [docs/SMARTSHEET-OPTION.md](docs/SMARTSHEET-OPTION.md) for what it could replace (forms, approvals, tallies come largely free) versus what stays a gap either way (Corrigo API access, and rebuilding the process rules as form logic).
