@@ -216,10 +216,16 @@
     background:linear-gradient(to top, var(--bg) 60%, transparent);
     display:flex; gap:10px; justify-content:center;
   }
+  .actionbar .inner-wrap{width:100%; max-width:608px;}
   .actionbar .inner{
-    width:100%; max-width:608px; display:flex; gap:10px;
+    display:flex; gap:10px;
     background:var(--surface); border:1px solid var(--border); border-radius:14px;
     padding:10px; box-shadow:var(--shadow);
+  }
+  .validation-hint{
+    text-align:center; font-size:12px; font-weight:600; color:var(--danger);
+    background:var(--danger-bg); border:1px solid var(--border); border-radius:10px 10px 0 0;
+    padding:7px 10px; margin-bottom:-1px;
   }
   .btn{
     flex:1; border:none; border-radius:10px; padding:12px 10px; font:inherit; font-weight:700; font-size:13.5px;
@@ -306,13 +312,46 @@
       <label for="fmSelect">Facility Manager</label>
       <select id="fmSelect">
         <option value="" disabled selected>Select FM…</option>
-        <option>Van Nguyen</option>
-        <option>Priya Shah</option>
-        <option>Marcus Ortega</option>
-        <option>Dana Whitfield</option>
+        <optgroup label="Alan Macejak's region">
+          <option>Chad Scott</option>
+          <option>Eric Heineman</option>
+          <option>Trini Stella</option>
+        </optgroup>
+        <optgroup label="Alex Sanchez's region">
+          <option>Keith DuBarry</option>
+          <option>Ty Pollay</option>
+          <option>Greg Niermeyer</option>
+        </optgroup>
+        <optgroup label="Bruce Powell's region">
+          <option>Thomas Samplewood</option>
+          <option>Jonathan O'Keeffe</option>
+          <option>Josh Mitchell</option>
+        </optgroup>
+        <optgroup label="Jan Bicicchi's region">
+          <option>Kemper Druckemiller</option>
+          <option>Matt Gau</option>
+          <option>Raj Harkissoon</option>
+        </optgroup>
+        <optgroup label="Laura Martinez's region">
+          <option>Toby Hrupek</option>
+          <option>Jason Gedvilas</option>
+          <option>John Rymaszewski</option>
+          <option>Mike Hoffman</option>
+          <option>Scott Mastalish</option>
+        </optgroup>
+        <optgroup label="Sean Snyder's region">
+          <option>Mark Ekstrom</option>
+          <option>Dave Fleming</option>
+          <option>Van Baker</option>
+        </optgroup>
+        <optgroup label="Susie Bloemers's region">
+          <option>Cindy Frisch</option>
+          <option>Briana Heinen</option>
+          <option>Johnathan Rosenkild</option>
+        </optgroup>
         <option value="__other__">Other / not listed</option>
       </select>
-      <div class="why" style="margin-top:6px;">Example roster — swap in your real FM list.</div>
+      <div class="why" style="margin-top:6px;">Grouped by Area FM — pick the site-level FM for your location.</div>
     </div>
     <div class="field span2" id="fmOtherField" hidden>
       <label for="fmOther">FM name</label>
@@ -448,9 +487,12 @@
 <div class="toast" id="toast">Copied</div>
 
 <div class="actionbar">
-  <div class="inner">
-    <button class="btn secondary" id="copyBtn">Copy email</button>
-    <button class="btn primary" id="mailtoBtn">Open in mail app</button>
+  <div class="inner-wrap">
+    <div class="validation-hint" id="validationHint" hidden></div>
+    <div class="inner">
+      <button class="btn secondary" id="copyBtn">Copy email</button>
+      <button class="btn primary" id="mailtoBtn">Open in mail app</button>
+    </div>
   </div>
 </div>
 
@@ -632,6 +674,15 @@
     return { body: lines.join('\n'), over: over };
   }
 
+  function missingFields(){
+    var missing = [];
+    if(!$('location').value.trim()) missing.push('Location');
+    if(!getFM()) missing.push('Facility Manager');
+    if(!$('description').value.trim()) missing.push('WO description');
+    if($('resource').value === 'Third-party' && !$('vendor').value.trim()) missing.push('Recommended vendor');
+    return missing;
+  }
+
   function render(){
     var res = buildEmail();
     $('emailPreview').textContent = res.body;
@@ -647,6 +698,14 @@
     $('assetField').hidden = isThirdParty;
 
     $('fmOtherField').hidden = $('fmSelect').value !== '__other__';
+
+    var missing = missingFields();
+    var ready = missing.length === 0;
+    $('copyBtn').disabled = !ready;
+    $('mailtoBtn').disabled = !ready;
+    var hint = $('validationHint');
+    hint.hidden = ready;
+    if(!ready) hint.textContent = 'Fill in ' + missing.join(', ') + ' to send';
   }
 
   function toast(msg){
