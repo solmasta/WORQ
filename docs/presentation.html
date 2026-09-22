@@ -87,10 +87,10 @@
 
   /* Slide 2: Problem */
   #s-problem .stamp{
-    display:inline-block; border:6px solid var(--old); color:var(--old);
-    font-family:'IBM Plex Sans',sans-serif; font-weight:800; font-size:clamp(30px,5vw,56px);
-    padding:10px 28px; border-radius:14px; transform:rotate(-4deg) scale(1);
-    letter-spacing:.03em; margin-bottom:28px;
+    display:inline-block; border:4px solid var(--old); color:var(--old);
+    font-family:'IBM Plex Sans',sans-serif; font-weight:800; font-size:clamp(20px,3vw,32px);
+    padding:7px 18px; border-radius:10px; transform:rotate(-3deg) scale(1);
+    letter-spacing:.03em; margin-bottom:24px;
   }
   .slide.active #s-problem .stamp{animation:stampIn .5s cubic-bezier(.2,1.4,.4,1) both; animation-delay:.1s;}
   @keyframes stampIn{0%{transform:rotate(-4deg) scale(2.2); opacity:0;} 100%{transform:rotate(-4deg) scale(1); opacity:1;}}
@@ -98,8 +98,21 @@
   #s-problem p.lead{font-size:clamp(19px,2.4vw,26px); line-height:1.55; max-width:56ch; margin-bottom:14px;}
   #s-problem .quote{
     font-style:italic; color:var(--muted); font-size:17px; border-left:3px solid var(--border);
-    padding-left:14px; max-width:52ch;
+    padding-left:14px; max-width:52ch; margin-bottom:22px;
   }
+  #s-problem .bridge{
+    font-size:clamp(18px,2.2vw,23px); font-weight:700; color:var(--now); max-width:44ch;
+    font-family:'IBM Plex Sans',sans-serif; line-height:1.45;
+  }
+
+  /* Slide: Every Category, Every Time */
+  .badge-grid{display:flex; flex-wrap:wrap; gap:10px;}
+  .badge{
+    background:var(--now-bg); color:var(--now); border:1.5px solid var(--now);
+    font-weight:700; font-size:15px; padding:9px 16px; border-radius:999px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .badge::before{content:"✓"; font-weight:800;}
 
   /* Slide 3: What changed */
   .flip-row{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:18px; margin-bottom:16px;}
@@ -197,9 +210,32 @@
 
   <section class="slide" id="s-problem">
     <div class="slide-inner">
+      <span class="eyebrow reveal">Where we started</span>
       <div class="reveal"><span class="stamp">DO NOT PROCEED</span></div>
-      <p class="lead reveal">The original process required every single work request — no matter how small — to stop and wait for a live Facility Manager consultation before anything could happen.</p>
+      <p class="lead reveal">The original process required every request — no matter how small — to stop for a live Facility Manager consultation before anything could happen.</p>
       <p class="quote reveal">"All WORQ requests must be reviewed with the Facility Manager prior to authorization or execution."</p>
+      <p class="bridge reveal">So we asked: what if every request just arrived complete — nothing missing, nothing to chase down?</p>
+    </div>
+  </section>
+
+  <section class="slide" id="s-complete">
+    <div class="slide-inner">
+      <h2 class="title reveal">Every Category, Every Time</h2>
+      <p class="lead reveal" style="margin-bottom:26px;">Instead of a conversation that might cover half of what's needed, the request itself now always carries all of this:</p>
+      <div class="badge-grid">
+        <div class="badge reveal">Location</div>
+        <div class="badge reveal">Facility Manager</div>
+        <div class="badge reveal">Priority</div>
+        <div class="badge reveal">Description</div>
+        <div class="badge reveal">Cost (NTE)</div>
+        <div class="badge reveal">Vendor</div>
+        <div class="badge reveal">Asset / equipment</div>
+        <div class="badge reveal">Condition</div>
+        <div class="badge reveal">Remaining life</div>
+        <div class="badge reveal">Capital type</div>
+        <div class="badge reveal">Photos</div>
+      </div>
+      <p class="counter-line reveal" style="margin-top:24px;">Nothing sent until it's complete.</p>
     </div>
   </section>
 

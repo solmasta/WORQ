@@ -4,7 +4,9 @@ This is the single source to upload to NotebookLM first (or paste as one documen
 
 **Audience:** corporate presentation, likely presented live on a Teams call. **Tone:** plain language — avoid technical terms (API, backend, database) unless directly explaining a limitation. **Goal:** show that a real communication gap between technicians and facility managers has been identified and closed, with working proof, not just a proposal.
 
-**There's already a live, animated deck built for exactly this call:** [`docs/presentation.html`](presentation.html) (open in a browser, live at `https://solmasta.github.io/WORQ/docs/presentation.html`). Eight slides, click or arrow keys to advance, built to be screen-shared directly — no need to export to PowerPoint first. It covers the same eight sections below in the same order. Use NotebookLM for a narrated video version if you want one; use this deck directly if you're presenting live.
+**There's already a live, animated deck built for exactly this call:** [`docs/presentation.html`](presentation.html) (open in a browser, live at `https://solmasta.github.io/WORQ/docs/presentation.html`). Nine slides, click or arrow keys to advance, built to be screen-shared directly — no need to export to PowerPoint first. It covers the same sections below in the same order. Use NotebookLM for a narrated video version if you want one; use this deck directly if you're presenting live.
+
+**A note on tone:** lead with the win, not the complaint. The original process is real context, not a target to score points off — spend one brief slide on it, then move quickly to what's impressive now: every request arrives complete, with nothing missing, every time. The deck's "Every Category, Every Time" slide (a checklist of everything captured automatically) is the moment built to land that.
 
 ---
 
@@ -23,12 +25,13 @@ The original procedure (v2, see `docs/assets/worq-process-flowchart-v2-original.
 
 Its own executive guidance stated: *"All WORQ requests must be reviewed with the Facility Manager prior to authorization or execution."* No exceptions for size or urgency. Every job — a $40 part or a major system failure — went through the same live-consultation gate.
 
-**Why that's a real gap, not just red tape:** it slows down obviously routine work, pulls FMs into a conversation for every single request, and relies entirely on a verbal or written description — no photos, no consistent structure, easy for details to get lost between tech and FM.
+**Why that's a real gap, not just red tape:** it slows down obviously routine work, pulls FMs into a conversation for every single request, and relies entirely on a verbal or written description — no photos, no consistent structure, easy for details to get lost between tech and FM. **Keep this section brief when presenting** — it's context for what follows, not the headline.
 
 ## 3. What changed
 
 - **A clear dollar line: $499.** Routine jobs at or under that amount go straight through. Only requests that actually need a decision reach the FM for review.
-- **One structured form instead of a live consultation.** The tech fills in location, cost, condition, and what's needed once, in order — matching the same fields FMS already uses to create a work order.
+- **Every category, captured every time.** Location, FM, priority, description, cost, vendor, asset, condition, remaining life, capital type, photos — the same complete set on every request, instead of a conversation that might only cover half of it. This is the headline improvement: nothing is ever missing, because the form won't let it be.
+- **The request can't be sent incomplete.** The tech's "send" action (copy the email, or open it in their mail app) is only available once location, the FM, and a description are actually filled in — the tool enforces completeness rather than hoping for it.
 - **Photos, captioned by the tech.** The FM sees the actual problem instead of just reading about it. Each photo can be downloaded with its caption burned directly into the image, so it stays self-explanatory even once attached to an email or work order.
 - **Techs recommend, FMs decide — made explicit.** Vendor choice, repair-vs-replace, and capital classification are labeled in the form and the resulting email as the tech's recommendation. The FM still confirms all of it. This preserves the original process's accountability goal; it just records it clearly instead of requiring a live check-in to establish it.
 - **A proposed one-click path for the easy cases.** For a plain internal repair with no vendor and no capital-vs-operating judgment call, approving it could also create the Corrigo work order directly — no re-typing. Anything involving a vendor or a capital decision still comes to the FM as a manual call, matching how much judgment that case actually needs.
@@ -38,17 +41,18 @@ Its own executive guidance stated: *"All WORQ requests must be reviewed with the
 Two real, working pieces and one visual concept:
 
 ### A. WORQ Intake (technicians) — a real, live tool
-A guided web form technicians use instead of composing the WORQ email from memory. Screenshot: `docs/assets/presentation/slide-tech-tool.png`. Live at `https://solmasta.github.io/WORQ/`.
+A guided web form technicians use instead of composing the WORQ email from memory. Screenshot: `docs/assets/presentation/slide-5-tech-tool.png`. Live at `https://solmasta.github.io/WORQ/`.
 - Dropdown fields in the same order as the WORQ template (location, FM, priority, description, cost, asset, condition, capital type).
 - Hides irrelevant fields automatically (e.g. no asset field needed for a third-party vendor call).
-- Photo capture and captioning, described above.
+- Photo capture and captioning, described above (screenshot: `docs/assets/presentation/slide-6-photos.png`).
+- Won't let the tech send an incomplete request — copy/open-in-mail-app is disabled until location, FM, and description are filled in.
 - Produces the exact, correctly formatted email body — the tech copies it or opens it directly in their mail app. Nothing is sent automatically.
 
 ### B. FM Review Queue — a visual concept, not yet built
-Shows what the FM's side could look like: a queue of incoming requests with Approve / Deny / Forward-to-leadership options, and one-click Corrigo creation for the simple cases. Screenshot: `docs/assets/presentation/slide-fm-queue.png`. This is a static mockup (nothing is clickable) — built specifically as source material for this presentation, not a working system yet.
+Shows what the FM's side could look like: a queue of incoming requests with Approve / Deny / Forward-to-leadership options, and one-click Corrigo creation for the simple cases. Screenshot: `docs/assets/presentation/slide-7-fm-review.png`. This is a static mockup (nothing is clickable) — built specifically as source material for this presentation, not a working system yet.
 
 ### C. Before/After comparison
-The clearest single visual for explaining "why this is better." Screenshot: `docs/assets/presentation/slide-before-after.png`.
+An additional, more detailed comparison document (separate from the deck): `docs/before-after.html` / `docs/assets/before-after-comparison.png`.
 
 ## 5. What stays exactly the same
 
@@ -67,27 +71,28 @@ Say this clearly and early when presenting — it's the reassurance that makes t
 
 ## 7. Suggested narrative order for the deck/video
 
-1. Open on the original process's own words — "DO NOT PROCEED." Let it feel real before explaining anything.
-2. State the goal in one sentence: close the communication gap between techs and FMs.
-3. Show what changed (Section 3 above), leaning on the before/after visual.
-4. Show the actual tool — this is proof, not a pitch. Walk through the tech filling out a request, including a photo.
+1. Open briefly on the original process's own words — "DO NOT PROCEED." One slide, not dwelt on.
+2. Immediately pivot to the win: every request now carries every category, every time — nothing missing, nothing sent incomplete. This is the "impress them" moment.
+3. Show what else changed (Section 3 above): the $499 line, techs recommend/FMs decide, the one-click proposal.
+4. Show the actual tool — this is proof, not a pitch. Walk through the tech filling out a request, including a photo, and point out the send button only activates once it's complete.
 5. Show the FM side concept — how a request gets decided, and the one-click idea for easy cases.
 6. Reassure: what doesn't change (Section 5).
 7. Close honestly on what's next (Section 6) — Corrigo access needed, Smartsheet as an option worth a conversation.
 
 ## 8. Slide index
 
-The live deck (`docs/presentation.html`) has 8 slides, animated and click-through. Flat PNG exports of each — for dropping into NotebookLM, a Word doc, or an email — are in `docs/assets/presentation/`:
+The live deck (`docs/presentation.html`) has 9 slides, animated and click-through. Flat PNG exports of each — for dropping into NotebookLM, a Word doc, or an email — are in `docs/assets/presentation/`:
 
 | File | Shows |
 |---|---|
 | `slide-1-title.png` | Title card for the opener |
-| `slide-2-problem.png` | The original process's "DO NOT PROCEED," in its own words |
-| `slide-3-what-changed.png` | Three before/after contrasts, plus the $499 line |
-| `slide-4-tech-tool.png` | The WORQ Intake form, phone-framed, with callouts |
-| `slide-5-photos.png` | The photo + caption feature, phone-framed, with callouts |
-| `slide-6-fm-review.png` | Pending request → approved-and-created-in-Corrigo, side by side |
-| `slide-7-whats-next.png` | Three honest next steps: Corrigo API access, Corrigo's own alerts, Smartsheet option |
-| `slide-8-closing.png` | The reassurance close: what stays the same |
+| `slide-2-problem.png` | The original process's "DO NOT PROCEED," briefly, then pivots to the question that drove this project |
+| `slide-3-every-category.png` | The headline slide: every category captured, every time — "nothing sent until it's complete" |
+| `slide-4-what-changed.png` | Three before/after contrasts, plus the $499 line |
+| `slide-5-tech-tool.png` | The WORQ Intake form, phone-framed, with callouts |
+| `slide-6-photos.png` | The photo + caption feature, phone-framed, with callouts |
+| `slide-7-fm-review.png` | Pending request → approved-and-created-in-Corrigo, side by side |
+| `slide-8-whats-next.png` | Three honest next steps: Corrigo API access, Corrigo's own alerts, Smartsheet option |
+| `slide-9-closing.png` | The reassurance close: what stays the same |
 
 Higher-resolution / more detailed screenshots (individual form fields, individual FM queue states) are in `docs/assets/fm-review-states/` and `docs/assets/` if more detail is needed for a follow-up document rather than the live presentation.
