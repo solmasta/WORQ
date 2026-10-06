@@ -24,6 +24,15 @@ It's a single static file with no build step or server. To try it locally, open 
 
 [`docs/presentation.html`](docs/presentation.html) — live at `https://solmasta.github.io/WORQ/docs/presentation.html` — is an 8-slide animated, click-through deck built to be screen-shared directly on a call: the original process, what changed, the actual tools (with real screenshots), and an honest what's-next. Arrow keys or click to advance. Flat image exports of each slide are in [`docs/assets/presentation/`](docs/assets/presentation/) for dropping into NotebookLM or a document. See [docs/NOTEBOOKLM-BRIEFING.md](docs/NOTEBOOKLM-BRIEFING.md) for the full narrative source and suggested presentation order.
 
+## Printable PDFs
+
+[`docs/printables/`](docs/printables/) has print-ready PDF versions for anyone who needs a paper copy or a non-interactive handout:
+
+- [`WORQ-Overview.pdf`](docs/printables/WORQ-Overview.pdf) — a plain-English narrative explainer of the whole project (where we started, what changed, what's next), for someone with no prior context.
+- [`WORQ-Process.pdf`](docs/printables/WORQ-Process.pdf) — the printable version of `docs/WORQ-PROCESS.md`: the process steps, the WORQ email template, and job classification rules.
+- [`WORQ-Intake-Printable.pdf`](docs/printables/WORQ-Intake-Printable.pdf) — a paper fallback form for the intake tool, for when a tech can't use the live page.
+- [`WORQ-Flowchart-Cleaned-Up.pdf`](docs/printables/WORQ-Flowchart-Cleaned-Up.pdf) — the original v2 flowchart, redesigned for a professional, presentation-ready look without changing its content.
+
 ## Platform option: Smartsheet
 
 Since the company already runs Smartsheet, it's worth raising as an alternative delivery platform — not a decision, just an option for the presentation. See [docs/SMARTSHEET-OPTION.md](docs/SMARTSHEET-OPTION.md) for what it could replace (forms, approvals, tallies come largely free) versus what stays a gap either way (Corrigo API access, and rebuilding the process rules as form logic).
